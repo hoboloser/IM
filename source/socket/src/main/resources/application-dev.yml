@@ -1,0 +1,6 @@
+server: 
+    port: 8083
+    context-path: /socket
+logging:
+  config: classpath:logback-schema.xml
+    

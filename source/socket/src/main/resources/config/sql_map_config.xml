@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="false" />
+		<setting name="localCacheScope" value="STATEMENT" />
+	</settings>
+
+	<typeAliases>
+		<typeAlias type="org.bin.socket.entity.AccountGroup" alias="AccountGroup"/>
+		<typeAlias type="org.bin.socket.entity.ChatMessage" alias="ChatMessage"/>
+		<typeAlias type="org.bin.socket.entity.ChatRoom" alias="ChatRoom"/>
+		<typeAlias type="org.bin.socket.entity.DiscussionGroup" alias="DiscussionGroup"/>
+		<typeAlias type="org.bin.socket.entity.DiscussionGroupMenber" alias="DiscussionGroupMenber"/>
+		<typeAlias type="org.bin.socket.entity.DoubleChatMessage" alias="DoubleChatMessage"/>
+		<typeAlias type="org.bin.socket.entity.DoubleChatRoom" alias="DoubleChatRoom"/>
+		<typeAlias type="org.bin.socket.entity.FriendGroupMember" alias="FriendGroupMember"/>
+		<typeAlias type="org.bin.socket.entity.FriendGroup" alias="FriendGroup"/>
+		<typeAlias type="org.bin.socket.entity.LoginLog" alias="LoginLog"/>
+		<typeAlias type="org.bin.socket.entity.UserGroup" alias="UserGroup"/>
+		<typeAlias type="org.bin.socket.entity.Users" alias="Users"/>
+		<typeAlias type="org.bin.socket.entity.FriendMapper" alias="FriendMapper"/>
+		<typeAlias type="org.bin.socket.entity.LoginAccountNo" alias="LoginAccountNo"/>
+	</typeAliases>
+
+	<!-- <plugins> -->
+		<!-- <plugin interceptor="com.zhicall.mhospital.mybatis.plugin.SelectCountSqlInterceptor" />
+		<plugin interceptor="com.zhicall.mhospital.mybatis.plugin.OffsetLimitInterceptor">
+			<property name="dialectClass"
+				value="com.zhicall.mhospital.mybatis.dialect.MySQLDialect" />
+		</plugin> -->
+	<!-- </plugins> -->
+
+	<mappers>
+		<mapper resource="mapper/account_group_mapper.xml"/>
+		<mapper resource="mapper/chat_message_mapper.xml"/>
+		<mapper resource="mapper/chat_room_mapper.xml"/>
+		<mapper resource="mapper/discussion_group_mapper.xml"/>
+		<mapper resource="mapper/discussion_group_menber_mapper.xml"/>
+		<mapper resource="mapper/double_chat_message.xml"/>
+		<mapper resource="mapper/double_chat_room_mapper.xml"/>
+		<mapper resource="mapper/friend_group_mapper.xml"/>
+		<mapper resource="mapper/friend_group_member_mapper.xml"/>
+		<mapper resource="mapper/login_log_mapper.xml"/>
+		<mapper resource="mapper/user_group_mapper.xml"/>
+		<mapper resource="mapper/users_mapper.xml"/>
+		<mapper resource="mapper/friend_mapper.xml"/>
+		<mapper resource="mapper/login_account_no_mapper.xml"/>
+	</mappers>
+</configuration>

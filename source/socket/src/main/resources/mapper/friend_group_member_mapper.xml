@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.FriendGroupMember">
+	<resultMap id="friendGroupMemberList" type="FriendGroupMember">
+		<id property="id" column="id" />
+		<result property="fgroupId" column="FGROUP_ID" jdbcType="VARCHAR" />
+		<result property="account" column="ACCOUNT" jdbcType="VARCHAR" />
+		<result property="position" column="POSITION" jdbcType="VARCHAR" />
+		<result property="remark" column="REMARK" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addFriendGroupMember" parameterType="FriendGroupMember" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		friend_group_member (FGROUP_ID,ACCOUNT,POSITION,REMARK,CREATE_TIME)
+		values
+		(
+		#{fgroupId, jdbcType=VARCHAR},
+		#{account, jdbcType=VARCHAR},
+		#{position, jdbcType=VARCHAR},
+		#{remark, jdbcType=VARCHAR},
+		#{createTime, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="updateFriendGroupMember" parameterType="FriendGroupMember">
+		update friend_group_member
+		<set>
+			<if test="fgroupId != null">
+				FGROUP_ID = #{fgroupId,jdbcType=VARCHAR},
+			</if>
+			<if test="account != null">
+				ACCOUNT = #{account,jdbcType=VARCHAR},
+			</if>
+			<if test="position != null">
+				POSITION = #{position,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="getFriendGroupMemberList" parameterType="FriendGroupMember" resultMap="friendGroupMemberList">
+		select * from
+		friend_group_member
+		<where>
+    		<if test="fgroupId != null">
+				and FGROUP_ID like CONCAT('%',#{fgroupId,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="account != null">
+				and ACCOUNT like CONCAT('%',#{account,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="position != null">
+				and POSITION like CONCAT('%',#{position,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="remark != null">
+				and REMARK like CONCAT('%',#{remark,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="createTime != null">
+				and CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}		
+			</if>
+		</where>
+	</select>
+	<select id="getFriendGroupMemberById" resultMap="friendGroupMemberList"
+		parameterType="Long">
+		select * from friend_group_member where id=#{id}
+	</select>
+	<delete id="deleteFriendGroupMemberById" parameterType="Long">
+		delete from
+		friend_group_member where id=#{id}
+	</delete>
+
+</mapper>

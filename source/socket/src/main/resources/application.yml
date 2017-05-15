@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    active: dev
+  mybatis:
+    typeAliesPackage: org.bin.socket.entity
+    mappers-locations: classpath:mapper/*.xml
+  mvc: 
+    view: 
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+redis:
+  host: localhost
+  port: 6379
+  auth: 
+  pubsub-subject: realtime-pubsub
+  pool-minIdle: 1
+  pool-maxIdle: 10
+  pool-maxActive: 100
+  pool-maxWait: 1000
+  

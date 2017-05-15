@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.Users">
+	<resultMap id="usersList" type="Users">
+		<id property="id" column="id" />
+		<result property="account" column="ACCOUNT" jdbcType="VARCHAR" />
+		<result property="name" column="NAME" jdbcType="VARCHAR" />
+		<result property="password" column="PASSWORD" jdbcType="VARCHAR" />
+		<result property="avatarPic" column="AVATAR_PIC" jdbcType="VARCHAR" />
+		<result property="status" column="STATUS" jdbcType="VARCHAR" />
+		<result property="signature" column="SIGNATURE" jdbcType="VARCHAR" />
+		<result property="statusType" column="STATUS_TYPE" jdbcType="VARCHAR" />
+		<result property="validFlag" column="VALID_FLAG" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="lastLoginTime" column="LAST_LOGIN_TIME" jdbcType="TIMESTAMP" />
+		<result property="sex" column="SEX" jdbcType="VARCHAR" />
+		<result property="birthday" column="BIRTHDAY" jdbcType="VARCHAR" />
+		<result property="nickname" column="NICKNAME" jdbcType="VARCHAR" />
+		<result property="email" column="EMAIL" jdbcType="VARCHAR" />
+		<result property="age" column="AGE" jdbcType="BIGINT" />
+		<result property="active" column="ACTIVE" jdbcType="BIGINT" />
+	</resultMap>
+
+	<insert id="addUsers" parameterType="Users" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		users (ACCOUNT,NAME,PASSWORD,AVATAR_PIC,STATUS,SIGNATURE,STATUS_TYPE,VALID_FLAG,AGE,SEX,BIRTHDAY,NICKNAME,EMAIL,CREATE_TIME,UPDATE_TIME,ACTIVE,LAST_LOGIN_TIME)
+		values
+		(
+		#{account, jdbcType=VARCHAR},
+		#{name, jdbcType=VARCHAR},
+		#{password, jdbcType=VARCHAR},
+		#{avatarPic, jdbcType=VARCHAR},
+		#{status, jdbcType=VARCHAR},
+		#{signature, jdbcType=VARCHAR},
+		#{statusType, jdbcType=VARCHAR},
+		#{validFlag, jdbcType=VARCHAR},
+		#{age, jdbcType=BIGINT},
+		#{sex, jdbcType=VARCHAR},
+		#{birthday, jdbcType=VARCHAR},
+		#{nickname, jdbcType=VARCHAR},
+		#{email, jdbcType=VARCHAR},
+		#{createTime, jdbcType=TIMESTAMP},
+		#{updateTime, jdbcType=TIMESTAMP},
+		#{active, jdbcType=BIGINT},
+		#{lastLoginTime, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="updateUsers" parameterType="Users">
+		update users
+		<set>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				EMAIL = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				STATUS = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="signature != null">
+				SIGNATURE = #{signature,jdbcType=VARCHAR},
+			</if>
+			<if test="statusType != null">
+				STATUS_TYPE = #{statusType,jdbcType=VARCHAR},
+			</if>
+			<if test="validFlag != null">
+				VALID_FLAG = #{validFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="getUsersList" parameterType="HashMap" resultMap="usersList">
+		select * from
+		users
+		<where>
+			VALID_FLAG = 'ENABLE'
+    		<if test="account != null">
+				and ACCOUNT = #{account,jdbcType=VARCHAR}
+			</if>
+    		<if test="name != null">
+				and NAME like CONCAT('%',#{name,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="status != null">
+				and STATUS like CONCAT('%',#{status,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="statusType != null">
+				and STATUS_TYPE like CONCAT('%',#{statusType,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="validFlag != null">
+				and VALID_FLAG =#{validFlag,jdbcType=VARCHAR}
+			</if>
+    		<if test="createTime != null">
+				and CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}		
+			</if>
+    		<if test="updateTime != null">
+				and UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}		
+			</if>
+    		<if test="lastLoginTime != null">
+				and LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP}		
+			</if>
+		</where>
+	</select>
+	<select id="getUsersById" resultMap="usersList"	parameterType="Long">
+		select * from users where id=#{id}
+	</select>
+	<delete id="deleteUsersById" parameterType="Long">
+		delete from
+		users where id=#{id}
+	</delete>
+	
+	<update id="updateStatusAndLastLoginTime" parameterType="HashMap">
+		update users set LAST_LOGIN_TIME= now(),STATUS=#{status} where ACCOUNT = #{account} and VALID_FLAG = 'ENABLE'
+	</update>
+
+	<update id="updatePassword" parameterType="HashMap">
+		update users set PASSWORD = #{password} where ACCOUNT = #{account} and VALID_FLAG = 'ENABLE'
+	</update>
+	
+	<update id="updateAccountActive" parameterType="HashMap">
+		update users set ACTIVE = 1 where ACCOUNT = #{account} and VALID_FLAG = 'ENABLE'
+	</update>
+</mapper>

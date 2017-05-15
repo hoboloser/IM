@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.AccountGroup">
+	<resultMap id="accountGroupList" type="AccountGroup">
+		<id property="id" column="id" />
+		<result property="account" column="ACCOUNT" jdbcType="VARCHAR" />
+		<result property="groupAccount" column="GROUP_ACCOUNT" jdbcType="VARCHAR" />
+		<result property="accountRemark" column="ACCOUNT_REMARK" jdbcType="VARCHAR" />
+		<result property="groupId" column="GROUP_ID" jdbcType="BIGINT" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addAccountGroup" parameterType="AccountGroup" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		account_group (ACCOUNT,GROUP_ACCOUNT,ACCOUNT_REMARK,GROUP_ID,CREATE_TIME)
+		values
+		(
+		#{account, jdbcType=VARCHAR},
+		#{groupAccount, jdbcType=VARCHAR},
+		#{accountRemark, jdbcType=VARCHAR},
+		#{groupId, jdbcType=BIGINT},
+		#{createTime, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="updateAccountGroup" parameterType="AccountGroup">
+		update account_group
+		<set>
+			<if test="account != null">
+				ACCOUNT = #{account,jdbcType=VARCHAR},
+			</if>
+			<if test="groupAccount != null">
+				GROUP_ACCOUNT = #{groupAccount,jdbcType=VARCHAR},
+			</if>
+			<if test="accountRemark != null">
+				ACCOUNT_REMARK = #{accountRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="groupId != null">
+				GROUP_ID = #{groupId,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="getAccountGroupList" parameterType="HashMap" resultMap="accountGroupList">
+		select * from
+		account_group
+		<where>
+    		<if test="account != null">
+				and ACCOUNT = #{account,jdbcType=VARCHAR}
+			</if>
+    		<if test="groupAccount != null">
+				and GROUP_ACCOUNT = #{groupAccount,jdbcType=VARCHAR}
+			</if>
+    		<if test="accountRemark != null">
+				and ACCOUNT_REMARK like CONCAT('%',#{accountRemark,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="groupId != null">
+				and GROUP_ID = #{groupId,jdbcType=BIGINT}		
+			</if>
+    		<if test="createTime != null">
+				and CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}		
+			</if>
+		</where>
+	</select>
+	<select id="getAccountGroupById" resultMap="accountGroupList"
+		parameterType="Long">
+		select * from account_group where id=#{id}
+	</select>
+	<delete id="deleteAccountGroupById" parameterType="Long">
+		delete from
+		account_group where id=#{id}
+	</delete>
+
+</mapper>

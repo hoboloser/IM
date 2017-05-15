@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.DoubleChatMessage">
+	<resultMap id="doubleChatMessageList" type="DoubleChatMessage">
+		<id property="id" column="id" />
+		<result property="roomId" column="ROOM_ID" jdbcType="BIGINT" />
+		<result property="from" column="FROM" jdbcType="VARCHAR" />
+		<result property="text" column="TEXT" jdbcType="VARCHAR" />
+		<result property="audio" column="AUDIO" jdbcType="VARCHAR" />
+		<result property="image" column="IMAGE" jdbcType="VARCHAR" />
+		<result property="type" column="TYPE" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addDoubleChatMessage" parameterType="DoubleChatMessage" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		double_chat_message (ROOM_ID,FROM,TEXT,AUDIO,IMAGE,TYPE,CREATE_TIME)
+		values
+		(
+		#{roomId, jdbcType=BIGINT},
+		#{from, jdbcType=VARCHAR},
+		#{text, jdbcType=VARCHAR},
+		#{audio, jdbcType=VARCHAR},
+		#{image, jdbcType=VARCHAR},
+		#{type, jdbcType=VARCHAR},
+		#{createTime, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="updateDoubleChatMessage" parameterType="DoubleChatMessage">
+		update double_chat_message
+		<set>
+			<if test="roomId != null">
+				ROOM_ID = #{roomId,jdbcType=BIGINT},
+			</if>
+			<if test="from != null">
+				FROM = #{from,jdbcType=VARCHAR},
+			</if>
+			<if test="text != null">
+				TEXT = #{text,jdbcType=VARCHAR},
+			</if>
+			<if test="audio != null">
+				AUDIO = #{audio,jdbcType=VARCHAR},
+			</if>
+			<if test="image != null">
+				IMAGE = #{image,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				TYPE = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="getDoubleChatMessage" parameterType="DoubleChatMessage" resultMap="doubleChatMessageList">
+		select * from
+		double_chat_message
+		<where>
+    		<if test="roomId != null">
+				and ROOM_ID = #{roomId,jdbcType=BIGINT}		
+			</if>
+    		<if test="from != null">
+				and FROM like CONCAT('%',#{from,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="text != null">
+				and TEXT like CONCAT('%',#{text,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="audio != null">
+				and AUDIO like CONCAT('%',#{audio,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="image != null">
+				and IMAGE like CONCAT('%',#{image,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="type != null">
+				and TYPE like CONCAT('%',#{type,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="createTime != null">
+				and CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}		
+			</if>
+		</where>
+	</select>
+	<select id="getDoubleChatMessageById" resultMap="doubleChatMessageList"
+		parameterType="Long">
+		select * from double_chat_message where id=#{id}
+	</select>
+	<delete id="deleteDoubleChatMessageById" parameterType="Long">
+		delete from
+		double_chat_message where id=#{id}
+	</delete>
+
+</mapper>

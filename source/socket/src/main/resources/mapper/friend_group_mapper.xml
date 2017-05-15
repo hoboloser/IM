@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.FriendGroup">
+	<resultMap id="friendGroupList" type="FriendGroup">
+		<id property="id" column="id" />
+		<result property="fgroupId" column="FGROUP_ID" jdbcType="VARCHAR" />
+		<result property="fgroupName" column="FGROUP_NAME" jdbcType="VARCHAR" />
+		<result property="account" column="ACCOUNT" jdbcType="VARCHAR" />
+		<result property="order" column="ORDER" jdbcType="BIGINT" />
+		<result property="avatar" column="AVATAR" jdbcType="VARCHAR" />
+		<result property="introduction" column="INTRODUCTION" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addFriendGroup" parameterType="FriendGroup" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		friend_group (FGROUP_ID,FGROUP_NAME,ACCOUNT,`ORDER`,AVATAR,INTRODUCTION,CREATE_TIME,UPDATE_TIME)
+		values
+		(
+		#{fgroupId, jdbcType=VARCHAR},
+		#{fgroupName, jdbcType=VARCHAR},
+		#{account, jdbcType=VARCHAR},
+		#{order, jdbcType=BIGINT},
+		#{avatar, jdbcType=VARCHAR},
+		#{introduction, jdbcType=VARCHAR},
+		#{createTime, jdbcType=TIMESTAMP},
+		#{updateTime, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="updateFriendGroup" parameterType="FriendGroup">
+		update friend_group
+		<set>
+			<if test="fgroupId != null">
+				FGROUP_ID = #{fgroupId,jdbcType=VARCHAR},
+			</if>
+			<if test="fgroupName != null">
+				FGROUP_NAME = #{fgroupName,jdbcType=VARCHAR},
+			</if>
+			<if test="account != null">
+				ACCOUNT = #{account,jdbcType=VARCHAR},
+			</if>
+			<if test="order != null">
+				`ORDER` = #{order,jdbcType=BIGINT},
+			</if>
+			<if test="avatar != null">
+				AVATAR = #{avatar,jdbcType=VARCHAR},
+			</if>
+			<if test="introduction != null">
+				INTRODUCTION = #{introduction,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="getFriendGroupList" parameterType="HashMap" resultMap="friendGroupList">
+		select * from
+		friend_group
+		<where>
+    		<if test="fgroupId != null">
+				and FGROUP_ID = #{fgroupId,jdbcType=VARCHAR}
+			</if>
+    		<if test="fgroupName != null">
+				and FGROUP_NAME = #{fgroupName,jdbcType=VARCHAR}
+			</if>
+    		<if test="account != null">
+				and ACCOUNT = #{account,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="getFriendGroupById" resultMap="friendGroupList"
+		parameterType="Long">
+		select * from friend_group where id=#{id}
+	</select>
+	<delete id="deleteFriendGroupById" parameterType="Long">
+		delete from
+		friend_group where id=#{id}
+	</delete>
+
+</mapper>

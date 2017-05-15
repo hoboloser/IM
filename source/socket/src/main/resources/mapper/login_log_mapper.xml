@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.LoginLog">
+	<resultMap id="loginLogList" type="LoginLog">
+		<id property="id" column="id" />
+		<result property="account" column="ACCOUNT" jdbcType="VARCHAR" />
+		<result property="name" column="NAME" jdbcType="VARCHAR" />
+		<result property="loginTime" column="LOGIN_TIME" jdbcType="TIMESTAMP" />
+		<result property="loginIp" column="LOGIN_IP" jdbcType="VARCHAR" />
+		<result property="loginAddress" column="LOGIN_ADDRESS" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addLoginLog" parameterType="LoginLog" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		login_log (ACCOUNT,NAME,LOGIN_TIME,LOGIN_IP,LOGIN_ADDRESS,CREATE_TIME)
+		values
+		(
+		#{account, jdbcType=VARCHAR},
+		#{name, jdbcType=VARCHAR},
+		#{loginTime, jdbcType=TIMESTAMP},
+		#{loginIp, jdbcType=VARCHAR},
+		#{loginAddress, jdbcType=VARCHAR},
+		#{createTime, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="updateLoginLog" parameterType="LoginLog">
+		update login_log
+		<set>
+			<if test="account != null">
+				ACCOUNT = #{account,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="loginTime != null">
+				LOGIN_TIME = #{loginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="loginIp != null">
+				LOGIN_IP = #{loginIp,jdbcType=VARCHAR},
+			</if>
+			<if test="loginAddress != null">
+				LOGIN_ADDRESS = #{loginAddress,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="getLoginLogList" parameterType="hashMap" resultMap="loginLogList">
+		select * from
+		login_log
+		<where>
+    		<if test="account != null">
+				and ACCOUNT = #{account,jdbcType=VARCHAR}
+			</if>
+    		<if test="name != null">
+				and NAME like CONCAT('%',#{name,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="loginTime != null">
+				and LOGIN_TIME = #{loginTime,jdbcType=TIMESTAMP}		
+			</if>
+    		<if test="loginIp != null">
+				and LOGIN_IP like CONCAT('%',#{loginIp,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="loginAddress != null">
+				and LOGIN_ADDRESS like CONCAT('%',#{loginAddress,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="createTime != null">
+				and CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}		
+			</if>
+		</where>
+	</select>
+	<select id="getLoginLogById" resultMap="loginLogList"
+		parameterType="Long">
+		select * from login_log where id=#{id}
+	</select>
+	<delete id="deleteLoginLogById" parameterType="Long">
+		delete from
+		login_log where id=#{id}
+	</delete>
+
+</mapper>

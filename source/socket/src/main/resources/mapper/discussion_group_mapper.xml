@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.DiscussionGroup">
+	<resultMap id="discussionGroupList" type="DiscussionGroup">
+		<id property="id" column="id" />
+		<result property="dgroupId" column="DGROUP_ID" jdbcType="VARCHAR" />
+		<result property="dgroupName" column="DGROUP_NAME" jdbcType="VARCHAR" />
+		<result property="account" column="ACCOUNT" jdbcType="VARCHAR" />
+		<result property="order" column="ORDER" jdbcType="BIGINT" />
+		<result property="avatar" column="AVATAR" jdbcType="VARCHAR" />
+		<result property="introduction" column="INTRODUCTION" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addDiscussionGroup" parameterType="DiscussionGroup" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		discussion_group (DGROUP_ID,DGROUP_NAME,ACCOUNT,ORDER,AVATAR,INTRODUCTION,CREATE_TIME,UPDATE_TIME)
+		values
+		(
+		#{dgroupId, jdbcType=VARCHAR},
+		#{dgroupName, jdbcType=VARCHAR},
+		#{account, jdbcType=VARCHAR},
+		#{order, jdbcType=BIGINT},
+		#{avatar, jdbcType=VARCHAR},
+		#{introduction, jdbcType=VARCHAR},
+		#{createTime, jdbcType=TIMESTAMP},
+		#{updateTime, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="updateDiscussionGroup" parameterType="DiscussionGroup">
+		update discussion_group
+		<set>
+			<if test="dgroupId != null">
+				DGROUP_ID = #{dgroupId,jdbcType=VARCHAR},
+			</if>
+			<if test="dgroupName != null">
+				DGROUP_NAME = #{dgroupName,jdbcType=VARCHAR},
+			</if>
+			<if test="account != null">
+				ACCOUNT = #{account,jdbcType=VARCHAR},
+			</if>
+			<if test="order != null">
+				ORDER = #{order,jdbcType=BIGINT},
+			</if>
+			<if test="avatar != null">
+				AVATAR = #{avatar,jdbcType=VARCHAR},
+			</if>
+			<if test="introduction != null">
+				INTRODUCTION = #{introduction,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="getDiscussionGroupList" parameterType="HashMap" resultMap="discussionGroupList">
+		select * from
+		discussion_group
+		<where>
+    		<if test="dgroupId != null">
+				and DGROUP_ID = #{dgroupId,jdbcType=VARCHAR}
+			</if>
+    		<if test="dgroupName != null">
+				and DGROUP_NAME = #{dgroupName,jdbcType=VARCHAR}
+			</if>
+    		<if test="account != null">
+				and ACCOUNT = #{account,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="getDiscussionGroupById" resultMap="discussionGroupList"
+		parameterType="Long">
+		select * from discussion_group where id=#{id}
+	</select>
+	<delete id="deleteDiscussionGroupById" parameterType="Long">
+		delete from
+		discussion_group where id=#{id}
+	</delete>
+
+</mapper>

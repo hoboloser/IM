@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.FriendMapper">
+	<resultMap id="friendMapperList" type="FriendMapper">
+		<id property="id" column="id" />
+		<result property="account" column="ACCOUNT" jdbcType="VARCHAR" />
+		<result property="friendAccount" column="FRIEND_ACCOUNT" jdbcType="VARCHAR" />
+		<result property="friendRemark" column="FRIEND_REMARK" jdbcType="VARCHAR" />
+		<result property="validFlag" column="VALID_FLAG" jdbcType="VARCHAR" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addFriendMapper" parameterType="FriendMapper" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		friend_mapper (ACCOUNT,FRIEND_ACCOUNT,FRIEND_REMARK,VALID_FLAG,UPDATE_TIME,CREATE_TIME)
+		values
+		(
+		#{account, jdbcType=VARCHAR},
+		#{friendAccount, jdbcType=VARCHAR},
+		#{friendRemark, jdbcType=VARCHAR},
+		#{validFlag, jdbcType=VARCHAR},
+		#{updateTime, jdbcType=TIMESTAMP},
+		#{createTime, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="updateFriendMapper" parameterType="FriendMapper">
+		update friend_mapper
+		<set>
+			<if test="account != null">
+				ACCOUNT = #{account,jdbcType=VARCHAR},
+			</if>
+			<if test="friendAccount != null">
+				FRIEND_ACCOUNT = #{friendAccount,jdbcType=VARCHAR},
+			</if>
+			<if test="friendRemark != null">
+				FRIEND_REMARK = #{friendRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="validFlag != null">
+				VALID_FLAG = #{validFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="getFriendMapperList" parameterType="FriendMapper" resultMap="friendMapperList">
+		select * from
+		friend_mapper
+		<where>
+    		<if test="account != null">
+				and ACCOUNT = #{account,jdbcType=VARCHAR}
+			</if>
+    		<if test="friendAccount != null">
+				and FRIEND_ACCOUNT = #{friendAccount,jdbcType=VARCHAR}
+			</if>
+    		<if test="friendRemark != null">
+				and FRIEND_REMARK like CONCAT('%',#{friendRemark,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="validFlag != null">
+				and VALID_FLAG = #{validFlag,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="getFriendMapperById" resultMap="friendMapperList"
+		parameterType="Long">
+		select * from friend_mapper where id=#{id}
+	</select>
+	<delete id="deleteFriendMapperById" parameterType="Long">
+		delete from
+		friend_mapper where id=#{id}
+	</delete>
+
+</mapper>

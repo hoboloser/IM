@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.DoubleChatRoom">
+	<resultMap id="doubleChatRoomList" type="DoubleChatRoom">
+		<id property="id" column="id" />
+		<result property="groupId" column="GROUP_ID" jdbcType="VARCHAR" />
+		<result property="type" column="TYPE" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addDoubleChatRoom" parameterType="DoubleChatRoom" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		double_chat_room (GROUP_ID,TYPE,CREATE_TIME)
+		values
+		(
+		#{groupId, jdbcType=VARCHAR},
+		#{type, jdbcType=VARCHAR},
+		#{createTime, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="updateDoubleChatRoom" parameterType="DoubleChatRoom">
+		update double_chat_room
+		<set>
+			<if test="groupId != null">
+				GROUP_ID = #{groupId,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				TYPE = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="getDoubleChatRoomList" parameterType="HashMap" resultMap="doubleChatRoomList">
+		select * from
+		double_chat_room
+		<where>
+    		<if test="groupId != null">
+				and GROUP_ID = #{groupId,jdbcType=VARCHAR}
+			</if>
+    		<if test="type != null">
+				and TYPE = #{type,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="getDoubleChatRoomById" resultMap="doubleChatRoomList"
+		parameterType="Long">
+		select * from double_chat_room where id=#{id}
+	</select>
+	<delete id="deleteDoubleChatRoomById" parameterType="Long">
+		delete from
+		double_chat_room where id=#{id}
+	</delete>
+
+</mapper>

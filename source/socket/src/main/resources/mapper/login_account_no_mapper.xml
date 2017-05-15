@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.LoginAccountNo">
+	<resultMap id="loginAccountNoList" type="LoginAccountNo">
+		<id property="id" column="id" />
+		<result property="no" column="NO" jdbcType="BIGINT" />
+		<result property="validFlag" column="VALID_FLAG" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addLoginAccountNo" parameterType="LoginAccountNo" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		login_account_no (NO,VALID_FLAG,CREATE_TIME,UPDATE_TIME)
+		values
+		(
+		#{no, jdbcType=BIGINT},
+		#{validFlag, jdbcType=VARCHAR},
+		#{createTime, jdbcType=TIMESTAMP},
+		#{updateTime, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="updateLoginAccountNo" parameterType="LoginAccountNo">
+		update login_account_no
+		<set>
+			<if test="no != null">
+				NO = #{no,jdbcType=BIGINT},
+			</if>
+			<if test="validFlag != null">
+				VALID_FLAG = #{validFlag,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="getLoginAccountNo" parameterType="LoginAccountNo" resultMap="loginAccountNoList">
+		select * from
+		login_account_no
+		<where>
+    		<if test="no != null">
+				and NO = #{no,jdbcType=BIGINT}		
+			</if>
+    		<if test="validFlag != null">
+				and VALID_FLAG like CONCAT('%',#{validFlag,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="createTime != null">
+				and CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}		
+			</if>
+    		<if test="updateTime != null">
+				and UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}		
+			</if>
+		</where>
+	</select>
+	<select id="getLoginAccountNoById" resultMap="loginAccountNoList"
+		parameterType="Long">
+		select * from login_account_no where id=#{id}
+	</select>
+	<delete id="deleteLoginAccountNoById" parameterType="Long">
+		delete from
+		login_account_no where id=#{id}
+	</delete>
+
+</mapper>

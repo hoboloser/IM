@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.ChatMessage">
+	<resultMap id="chatMessageList" type="ChatMessage">
+		<id property="id" column="id" />
+		<result property="roomId" column="ROOM_ID" jdbcType="BIGINT" />
+		<result property="from" column="FROM" jdbcType="VARCHAR" />
+		<result property="to" column="TO" jdbcType="VARCHAR" />
+		<result property="text" column="TEXT" jdbcType="VARCHAR" />
+		<result property="audio" column="AUDIO" jdbcType="VARCHAR" />
+		<result property="image" column="IMAGE" jdbcType="VARCHAR" />
+		<result property="type" column="TYPE" jdbcType="VARCHAR" />
+		<result property="isRead" column="IS_READ" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addChatMessage" parameterType="ChatMessage" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		chat_message (ROOM_ID,`FROM`,`TO`,TEXT,AUDIO,IMAGE,TYPE,CREATE_TIME,IS_READ)
+		values
+		(
+		#{roomId, jdbcType=BIGINT},
+		#{from, jdbcType=VARCHAR},
+		#{to, jdbcType=VARCHAR},
+		#{text, jdbcType=VARCHAR},
+		#{audio, jdbcType=VARCHAR},
+		#{image, jdbcType=VARCHAR},
+		#{type, jdbcType=VARCHAR},
+		#{createTime, jdbcType=TIMESTAMP},
+		#{isRead, jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<select id="getChatMessageList" parameterType="HashMap" resultMap="chatMessageList">
+		select * from
+		chat_message
+		<where>
+    		<if test="roomId != null and roomId > 0">
+				and ROOM_ID = #{roomId,jdbcType=BIGINT}		
+			</if>
+    		<if test="from != null">
+				and `FROM` = #{from,jdbcType=VARCHAR}
+			</if>
+    		<if test="to != null">
+				and `TO` = #{to,jdbcType=VARCHAR}
+			</if>
+    		<if test="type != null">
+				and TYPE = #{type,jdbcType=VARCHAR}
+			</if>
+    		<if test="isRead != null">
+				and IS_READ = #{isRead,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="getChatMessageById" resultMap="chatMessageList"
+		parameterType="Long">
+		select * from chat_message where id=#{id}
+	</select>
+	<delete id="deleteChatMessageById" parameterType="Long">
+		delete from
+		chat_message where id=#{id}
+	</delete>
+	
+	<update id="updateUnReadMsg" parameterType="HashMap">
+		update chat_message set IS_READ = 'READ'
+		<where>
+    		<if test="from != null">
+				and `FROM` = #{from,jdbcType=VARCHAR}
+			</if>
+    		<if test="to != null">
+				and `TO` = #{to,jdbcType=VARCHAR}
+			</if>
+    		<if test="isRead != null">
+				and IS_READ = #{isRead,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</update>
+
+</mapper>

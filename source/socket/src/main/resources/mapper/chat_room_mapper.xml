@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.ChatRoom">
+	<resultMap id="chatRoomList" type="ChatRoom">
+		<id property="id" column="id" />
+		<result property="from" column="FROM" jdbcType="VARCHAR" />
+		<result property="to" column="TO" jdbcType="VARCHAR" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addChatRoom" parameterType="ChatRoom" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		chat_room (`FROM`,`TO`,CREATE_TIME)
+		values
+		(
+		#{from, jdbcType=VARCHAR},
+		#{to, jdbcType=VARCHAR},
+		#{createTime, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<select id="getChatRoomList" parameterType="HashMap" resultMap="chatRoomList">
+		select * from
+		chat_room
+		<where>
+    		<if test="from != null">
+				and `FROM` = #{from,jdbcType=VARCHAR}
+			</if>
+    		<if test="to != null">
+				and `TO` = #{to,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	<select id="getChatRoomById" resultMap="chatRoomList"
+		parameterType="Long">
+		select * from chat_room where id=#{id}
+	</select>
+	<delete id="deleteChatRoomById" parameterType="Long">
+		delete from
+		chat_room where id=#{id}
+	</delete>
+
+</mapper>

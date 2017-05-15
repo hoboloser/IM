@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper  
+    PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  
+    "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="org.bin.socket.entity.UserGroup">
+	<resultMap id="userGroupList" type="UserGroup">
+		<id property="id" column="id" />
+		<result property="account" column="ACCOUNT" jdbcType="VARCHAR" />
+		<result property="groupName" column="GROUP_NAME" jdbcType="VARCHAR" />
+		<result property="order" column="ORDER" jdbcType="BIGINT" />
+		<result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="addUserGroup" parameterType="UserGroup" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		user_group (ACCOUNT,GROUP_NAME,`ORDER`,CREATE_TIME)
+		values
+		(
+		#{account, jdbcType=VARCHAR},
+		#{groupName, jdbcType=VARCHAR},
+		#{order, jdbcType=BIGINT},
+		#{createTime, jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="updateUserGroup" parameterType="UserGroup">
+		update user_group
+		<set>
+			<if test="account != null">
+				ACCOUNT = #{account,jdbcType=VARCHAR},
+			</if>
+			<if test="groupName != null">
+				GROUP_NAME = #{groupName,jdbcType=VARCHAR},
+			</if>
+			<if test="order != null">
+				ORDER = #{order,jdbcType=BIGINT},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		where id=#{id}
+	</update>
+	<select id="getUserGroupList" parameterType="UserGroup" resultMap="userGroupList">
+		select * from
+		user_group
+		<where>
+    		<if test="account != null">
+				and ACCOUNT like CONCAT('%',#{account,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="groupName != null">
+				and GROUP_NAME like CONCAT('%',#{groupName,jdbcType=VARCHAR},'%')
+			</if>
+    		<if test="order != null">
+				and ORDER = #{order,jdbcType=BIGINT}		
+			</if>
+    		<if test="createTime != null">
+				and CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}		
+			</if>
+		</where>
+	</select>
+	<select id="getUserGroupById" resultMap="userGroupList"
+		parameterType="Long">
+		select * from user_group where id=#{id}
+	</select>
+	<delete id="deleteUserGroupById" parameterType="Long">
+		delete from
+		user_group where id=#{id}
+	</delete>
+
+</mapper>
