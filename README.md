@@ -21,10 +21,10 @@ springboot+websocket
   >  "statusType": "在线",
   >  "updateTime": 1493953327000,
   >  "validFlag": "ENABLE"
- > },
-  >"errMsg": "登录成功！",
- > "success": true
->  }
-> </p>
+  > },
+  > "errMsg": "登录成功！",
+  > "success": true
+  > }
+  > </p>
 
  
