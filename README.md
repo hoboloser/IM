@@ -42,11 +42,11 @@ springboot+websocket
   >  signature:”签名”
   >  password:”密码”
 * 返回示例
-  ```
-    {
+<html>
+  {
   "data": {
     "age": 10,
-	"account": "666666", //登录账号
+    "account": "666666", //登录账号
     "id": 8,
     "name": "wo",
     "nickname": "123",
@@ -59,4 +59,5 @@ springboot+websocket
   "errMsg": "注册成功,激活邮件已发送,请前往邮箱激活！",
   "success": true
 }
-  ```
+<html>
+
