@@ -2,13 +2,14 @@
 springboot+websocket
 # Document
 ## 登录
-* 请求url：{API_Url}/socket/user/login
-  > POST
+* 请求url：
+  > {API_Url}/socket/user/login
+  > POST
 * 参数说明：
   > account:”admin”
   > passowrd:”123456”
 * 返回示例：
-  {
+ <p> {
   "data": {
     "account": "admin",
     "age": 0,
@@ -25,5 +26,6 @@ springboot+websocket
   "errMsg": "登录成功！",
   "success": true
 }
+</p>
 
  
